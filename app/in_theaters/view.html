@@ -1,0 +1,41 @@
+<h1 class="page-header">{{title}}</h1>
+<h2 ng-if="message">{{message}}</h2>
+<div class="list-group">
+	<!--<a ng-repeat="item in subjects |limitTo:3:0" href="#" class="list-group-item">-->
+	<a ng-repeat="item in subjects" href="#" class="list-group-item">
+		<span class="badge">{{item.rating.average}}</span>
+		<div class="media">
+			<div class="media-left">
+				<img class="media-object" ng-src="{{item.images.small}}" alt="{{item.title}}" height="128">
+			</div>
+			<div class="media-body">
+				<h2 class="media-heading">{{item.title}}</h2>
+				<p>导演：
+					<span ng-repeat="d in item.directors">
+						{{d.name+($last?'':'、')}}
+						<!--<span ng-if="!$last">、</span>-->
+					</span>
+				</p>
+				<p>类型：<strong>{{item.genres.join('、')}}</strong></p>
+			</div>
+		</div>
+	</a>
+</div>
+<div ng-show="!loading">
+	<p>总共: {{total}} 部电影,{{currentPage}}/{{totalPages}} 页</p>
+	<nav>
+		<ul class="pager">
+			<li ng-class="{disabled:currentPage<=1}"><a ng-click="go(currentPage-1)">&larr; 上一页</a></li>
+			<li ng-class="{disabled:currentPage>=totalPages}"><a ng-click="go(currentPage+1)">下一页 &rarr;</a></li>
+		</ul>
+	</nav>
+</div>
+<div class="mask" ng-show="loading">
+	<div class="sk-chasing-dots">
+		<div class="sk-child sk-dot1"></div>
+		<div class="sk-child sk-dot2"></div>
+	</div>
+
+</div>
+
+
