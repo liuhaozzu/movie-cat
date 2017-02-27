@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>异步加载库</title>
+	<!--load.js  script.js这两个库都可以，以异步的方式加载js文件-->
+	<!--该js文件最好放在head里-->
+
+
+	<script src="bower_components/script.js/dist/script.js"></script>
+	<!--angular-loader 就是在使用一些异步加载的脚步的库时，只需要引入该js就可以自动控制依赖顺序-->
+	<script src="bower_components/angular-loader/angular-loader.js"></script>
+	<script>
+		/*$script('bower_components/jquery/dist/jquery.js', function () {
+
+		});*/
+		//用法二：传入文件列表
+		//异步文件时并行的，如果加载的文件间有依赖关系，可能会出错，
+		//可以使用嵌套解决该问题。但方法比较麻烦
+		$script(['./bower_components/jquery/dist/jquery.js'], function () {
+			$script(['./bower_components/bootstrap/dist/js/bootstrap.js'], function () {
+
+			})
+		})
+	</script>
+
+
+</head>
+<body>
+
+
+</body>
+</html>
