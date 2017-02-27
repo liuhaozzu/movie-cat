@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>load js</title>
+	<script>
+		function $script(loads, callback) {
+			var scriptEle=document.createElement('script');
+			scriptEle.src=loads;
+			document.head.appendChild(scriptEle);
+			//脚本完成后执行
+			scriptEle.addEventListener('load',callback);
+		}
+
+		$script('app.js', function () {
+			console.log(111);
+		});
+	</script>
+</head>
+<body>
+
+</body>
+</html>
