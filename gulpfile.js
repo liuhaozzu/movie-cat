@@ -17,6 +17,7 @@ var uglify=require('gulp-uglify');
 var htmlmin=require('gulp-htmlmin');
 var mainBowerFiles=require('main-bower-files');
 var browserSync=require('browser-sync');
+var del=require('del');
 //less 编译 压缩 合并(可以通过@import 语法进行合并)
 gulp.task('styles',function () {
 	//执行style任务时，自动执行
@@ -72,11 +73,11 @@ gulp.task('scripts',function () {
 });*/
 
 gulp.task('app',()=>{
-	gulp.src(['!app/bower_components/**','app/*'])
+	gulp.src(['!app/bower_components/**','app/**/*.*'])
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('serve',function () {
+gulp.task('serve',['build'],function () {
 	browserSync({
 		notify:false,
 		port:3001,
@@ -91,4 +92,15 @@ gulp.task('serve',function () {
 	gulp.watch('dest/scripts/*.js',['script']);
 	gulp.watch('dest/images/*.*',['image']);
 	gulp.watch('app/*.html',['html']);
+});
+
+gulp.task('build', ['styles', 'fonts', 'scripts', 'app'], () => {
+  //return gulp.src('dist/**/*').pipe(plugins.size({
+  //  title: 'build',
+  //  gzip: true
+  //}));
+});
+gulp.task('clean', del.bind(null, ['dist']));
+gulp.task('default', ['clean'], () => {
+  gulp.start('serve');
 });
