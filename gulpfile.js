@@ -15,40 +15,52 @@ var cssnano=require('gulp-cssnano');
 var concat=require('gulp-concat');
 var uglify=require('gulp-uglify');
 var htmlmin=require('gulp-htmlmin');
+var mainBowerFiles=require('main-bower-files');
 var browserSync=require('browser-sync');
 //less 编译 压缩 合并(可以通过@import 语法进行合并)
-gulp.task('style',function () {
+gulp.task('styles',function () {
 	//执行style任务时，自动执行
-	gulp.src(['src/styles/*.less','!src/styles/_*.less'])
-		.pipe(less())
+	gulp.src(['app/bower_components/**/*.min.css'])
+		//.pipe(less())
 		.pipe(cssnano())
-		.pipe(gulp.dest('dist/styles'))
+		.pipe(gulp.dest('dist/bower_components'))
 		.pipe(browserSync.reload({
 			stream:true
 		}));//只需要设置导入的文件夹即可
 });
-//js 合并 压缩 混淆(可以通过@import 语法进行合并)
-gulp.task('script',function () {
+//fonts: copy 字体图标
+gulp.task('fonts',function () {
 	//执行style任务时，自动执行
-	gulp.src(['src/scripts/*.js'])
-		.pipe(concat('all.js'))//合并后的文件名
-		.pipe(uglif)
-		.pipe(gulp.dest('dist/scripts'))
+	gulp.src(mainBowerFiles({
+		filter:'app/bower_components/**/*.{eot,svg,ttf,woff,woff2,otf}'
+		}))
+		.pipe(gulp.dest('dist/bower_components'))
+		.pipe(browserSync.reload({
+			stream:true
+		}));//只需要设置导入的文件夹即可
+});
+//js 合并 压缩 混淆
+gulp.task('scripts',function () {
+	//执行style任务时，自动执行
+	gulp.src(['app/bower_components/**/*.min.js'])
+		//.pipe(concat('all.js'))//合并后的文件名
+		.pipe(uglify())
+		.pipe(gulp.dest('dist/bower_components'))
 		.pipe(browserSync.reload({
 			stream:true
 		}));//只需要设置导入的文件夹即可
 });
 //img复制
-gulp.task('image',function () {
+/*gulp.task('images',function () {
 	gulp.src('src/images/*.*')
 		.pipe(gulp.dest('dist/images'))
 		.pipe(browserSync.reload({
 			stream:true
 		}));
-});
+});*/
 //html
-gulp.task('html',function () {
-	gulp.src('app/*.html')
+/*gulp.task('app-index',function () {
+	gulp.src('app/*.*')
 		.pipe(htmlmin({
 			collapseWhitespace:true,
 			removeComments:true
@@ -57,6 +69,11 @@ gulp.task('html',function () {
 		.pipe(browserSync.reload({
 			stream:true
 		}));
+});*/
+
+gulp.task('app',()=>{
+	gulp.src(['!app/bower_components/**','app/*'])
+		.pipe(gulp.dest('dist'));
 });
 
 gulp.task('serve',function () {
